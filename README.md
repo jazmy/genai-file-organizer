@@ -4,6 +4,8 @@
 
 A self-hosted file organization system powered by multimodal AI. Analyzes file contents using vision-language models (VLMs) running entirely on your local machine—no cloud APIs, no data leaving your computer.
 
+View the [GenAI Secret Sauce for Local File Organization](https://genaisecretsauce.com/genai-secret-sauce-for-local-file-organization/) for insights on what I learned while building this tool.
+
 ![Main Dashboard](docs/screenshots/01-main-dashboard.png)
 
 ## Why GenAI File Organizer?
