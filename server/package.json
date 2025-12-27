@@ -25,7 +25,8 @@
     "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
     "migrate": "node db/migrateCommand.js migrate",
     "migrate:status": "node db/migrateCommand.js status",
-    "migrate:rollback": "node db/migrateCommand.js rollback"
+    "migrate:rollback": "node db/migrateCommand.js rollback",
+    "db:reset": "rm -f ../data/genorganize.db ../data/genorganize.db-wal ../data/genorganize.db-shm && echo 'Database deleted. Run npm run server to recreate.'"
   },
   "dependencies": {
     "better-sqlite3": "^11.10.0",

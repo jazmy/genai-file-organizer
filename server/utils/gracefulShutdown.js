@@ -38,7 +38,15 @@ class GracefulShutdown {
 
     // Handle unhandled promise rejections
     process.on('unhandledRejection', (reason, promise) => {
-      logger.error('Unhandled rejection at:', promise, 'reason:', reason);
+      let errorMessage;
+      if (reason instanceof Error) {
+        errorMessage = reason.stack || reason.message || 'Error with no message';
+      } else if (reason === undefined || reason === null || reason === '') {
+        errorMessage = 'Unknown rejection (no reason provided)';
+      } else {
+        errorMessage = String(reason) || 'Unknown rejection';
+      }
+      logger.error('Unhandled rejection:', errorMessage);
       // Don't shutdown on unhandled rejections, just log
     });
 

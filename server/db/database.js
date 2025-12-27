@@ -142,6 +142,11 @@ db.exec(`
     validated_at DATETIME,
     original_suggested_name TEXT,
     corrected_name TEXT,
+    validation_attempts INTEGER DEFAULT 0,
+    validation_reason TEXT,
+    validation_suggested_fix TEXT,
+    validation_model TEXT,
+    validation_history TEXT,
 
     -- Regeneration tracking
     is_regeneration INTEGER DEFAULT 0,
@@ -230,30 +235,15 @@ db.exec(`
   CREATE INDEX IF NOT EXISTS idx_ai_logs_batch ON ai_logs(batch_id);
   CREATE INDEX IF NOT EXISTS idx_ai_logs_user_action ON ai_logs(user_action);
   CREATE INDEX IF NOT EXISTS idx_ai_logs_file_path ON ai_logs(file_path);
+  CREATE INDEX IF NOT EXISTS idx_ai_logs_regeneration ON ai_logs(is_regeneration);
+  CREATE INDEX IF NOT EXISTS idx_ai_logs_categorization_model ON ai_logs(categorization_model);
+  CREATE INDEX IF NOT EXISTS idx_ai_logs_naming_model ON ai_logs(naming_model);
+  CREATE INDEX IF NOT EXISTS idx_ai_logs_validation_passed ON ai_logs(validation_passed);
   CREATE INDEX IF NOT EXISTS idx_api_logs_created ON api_logs(created_at DESC);
   CREATE INDEX IF NOT EXISTS idx_api_logs_endpoint ON api_logs(endpoint);
   CREATE INDEX IF NOT EXISTS idx_error_logs_created ON error_logs(created_at DESC);
   CREATE INDEX IF NOT EXISTS idx_error_logs_type ON error_logs(error_type);
 `);
-
-// Add description column if it doesn't exist (migration for existing databases)
-try {
-  db.exec(`ALTER TABLE prompts ADD COLUMN description TEXT`);
-  logger.info('Added description column to prompts table');
-} catch (e) {
-  // Column already exists, ignore
-}
-
-// Add ai_suggested_name column if it doesn't exist (migration for existing databases)
-try {
-  db.exec(`ALTER TABLE processed_files ADD COLUMN ai_suggested_name TEXT`);
-  logger.info('Added ai_suggested_name column to processed_files table');
-  // Backfill: set ai_suggested_name to suggested_name for existing records
-  db.exec(`UPDATE processed_files SET ai_suggested_name = suggested_name WHERE ai_suggested_name IS NULL`);
-  logger.info('Backfilled ai_suggested_name for existing records');
-} catch (e) {
-  // Column already exists, ignore
-}
 
 // Default descriptions for each category (used in categorization prompt)
 const DEFAULT_DESCRIPTIONS = {
@@ -2239,7 +2229,7 @@ export const dbOperations = {
     const errorStats = db.prepare(`
       SELECT
         COUNT(*) as total,
-        SUM(CASE WHEN resolved = 0 THEN 1 ELSE 0 END) as unresolved
+        COALESCE(SUM(CASE WHEN resolved = 0 THEN 1 ELSE 0 END), 0) as unresolved
       FROM error_logs WHERE 1=1 ${dateFilter}
     `).get();
 

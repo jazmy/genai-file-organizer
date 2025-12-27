@@ -11,6 +11,7 @@
     "web": "cd client && npm run dev",
     "build:web": "cd client && npm run build",
     "install:all": "cd server && npm install && cd ../client && npm install",
+    "db:reset": "cd server && npm run db:reset",
     "llama-server": "echo 'Update this script with your model paths. Example:' && echo 'llama-server -m /path/to/your/model.gguf --mmproj /path/to/mmproj.gguf --host 127.0.0.1 --port 8080 -np 4 -cb -c 16384'"
   },
   "keywords": [
