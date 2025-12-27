@@ -195,12 +195,30 @@ app.get('/api/system/metrics', (req, res) => {
     const memStatus = memoryManager.getStatus();
     const memTrend = memoryManager.getMemoryTrend();
 
+    // Determine memory status based on heap usage percentage
+    const heapUsedPercent = memStatus.current?.heapUsedPercent || 0;
+    let memoryStatusLevel = 'normal';
+    if (heapUsedPercent > 90) {
+      memoryStatusLevel = 'critical';
+    } else if (heapUsedPercent > 70) {
+      memoryStatusLevel = 'warning';
+    }
+
     res.json({
       success: true,
       ...metrics,
       memory: {
-        ...memStatus,
-        trend: memTrend,
+        current: memStatus.current,
+        status: memoryStatusLevel,
+        threshold: {
+          warn: memStatus.thresholds?.warnMB || 500,
+          critical: memStatus.thresholds?.criticalMB || 800,
+        },
+        trend: {
+          direction: memTrend.trend || 'stable',
+          changePercent: memTrend.change || 0,
+          samples: memStatus.recentHistory?.length || 0,
+        },
       },
     });
   } catch (error) {
