@@ -79,7 +79,9 @@ export function useProcessing() {
 
   // Process selected files with parallel processing
   const previewSelected = useCallback(async () => {
-    const filesToProcess = Array.from(selectedFiles);
+    // Get current state to avoid stale closure issues
+    const { selectedFiles: currentSelectedFiles, currentPath: path, clearSelection: clear } = useFileStore.getState();
+    const filesToProcess = Array.from(currentSelectedFiles);
     if (filesToProcess.length === 0) return;
 
     try {
@@ -88,7 +90,7 @@ export function useProcessing() {
       const parallelCount = config.processing?.parallelFiles || 3;
 
       // Create queue in database
-      const queueResult = await createQueue(filesToProcess, currentPath);
+      const queueResult = await createQueue(filesToProcess, path);
       const batchId = queueResult.batchId;
 
       startBatch(filesToProcess, batchId);
@@ -100,7 +102,7 @@ export function useProcessing() {
       // Process files in parallel batches
       for (let i = 0; i < filesToProcess.length; i += parallelCount) {
         const batch = filesToProcess.slice(i, i + parallelCount);
-        
+
         // Process batch in parallel
         const results = await Promise.all(
           batch.map(filePath => processOneFile(filePath, batchId))
@@ -121,7 +123,7 @@ export function useProcessing() {
       }
 
       endBatch();
-      clearSelection();
+      clear();
 
       addToast({
         type: successCount > 0 ? 'success' : 'error',
@@ -136,7 +138,7 @@ export function useProcessing() {
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     }
-  }, [selectedFiles, currentPath, startBatch, setProgress, endBatch, addResult, clearSelection, addToast]);
+  }, [startBatch, setProgress, endBatch, addToast]);
 
   // Regenerate a single file with optional feedback
   const regenerateFile = useCallback(
@@ -196,14 +198,23 @@ export function useProcessing() {
     [setRegenerating, addResult, addToast]
   );
 
-  // Apply all ready changes
+  // Apply only selected files that have pending approval
   const applyAll = useCallback(async () => {
-    const readyResults = Array.from(results.entries())
-      .filter(([, result]) => result.success)
+    // Get current state to avoid stale closure issues
+    const { results: currentResults, selectedFiles: currentSelected } = useFileStore.getState();
+
+    // Only apply selected files - do nothing if no files selected
+    const selectedPaths = Array.from(currentSelected);
+    if (selectedPaths.length === 0) return;
+
+    // Filter to only selected files that have successful results
+    const readyResults = Array.from(currentResults.entries())
+      .filter(([path, result]) => result.success && selectedPaths.includes(path))
       .map(([path, result]) => ({
         filePath: path,
         suggestedName: result.suggestedName,
         originalName: result.originalName,
+        aiSuggestedName: result.aiSuggestedName || result.suggestedName,
       }));
 
     if (readyResults.length === 0) return;
@@ -232,15 +243,16 @@ export function useProcessing() {
 
       // Clear applied files from results and update file list
       // Use actual newPath from server (may be different directory if auto-organize moved file)
+      const { removeResult: remove, renameFileInList: rename } = useFileStore.getState();
       response.results.forEach(r => {
         if (r.success && r.newPath) {
-          removeResult(r.filePath);
+          remove(r.filePath);
           // Check if file was moved to a different directory
           const originalDir = r.filePath.substring(0, r.filePath.lastIndexOf('/'));
           const newDir = r.newPath.substring(0, r.newPath.lastIndexOf('/'));
           if (originalDir === newDir) {
             // Same directory - update the file in list
-            renameFileInList(r.filePath, r.newPath, r.suggestedName);
+            rename(r.filePath, r.newPath, r.suggestedName);
           } else {
             // Different directory (auto-organize moved it) - remove from current list
             // It will appear as completed when user navigates to the destination
@@ -261,10 +273,8 @@ export function useProcessing() {
       // Record feedback for all applied files
       try {
         await Promise.all(
-          readyResults.map(({ filePath, suggestedName }) => {
-            const result = results.get(filePath);
-            const aiOriginalName = result?.aiSuggestedName || result?.suggestedName;
-            const wasEdited = result && aiOriginalName !== suggestedName;
+          readyResults.map(({ filePath, suggestedName, aiSuggestedName }) => {
+            const wasEdited = aiSuggestedName !== suggestedName;
             return recordFeedback({
               filePath,
               action: wasEdited ? 'edited' : 'accepted',
@@ -275,6 +285,9 @@ export function useProcessing() {
       } catch {
         // Silently ignore feedback recording errors
       }
+
+      // Clear selection after successful apply
+      useFileStore.getState().clearSelection();
 
       addToast({
         type: 'success',
@@ -290,14 +303,17 @@ export function useProcessing() {
     } finally {
       endApplying();
     }
-  }, [results, removeResult, renameFileInList, addToast, pushAction, startApplying, endApplying]);
+  }, [addToast, pushAction, startApplying, endApplying]);
 
   // Apply a single file
   const applySingle = useCallback(
     async (filePath: string, suggestedName: string) => {
       try {
+        // Get current state to avoid stale closure issues
+        const { results: currentResults, removeResult: remove, renameFileInList: rename } = useFileStore.getState();
+
         // Get the original result to check if name was edited
-        const originalResult = results.get(filePath);
+        const originalResult = currentResults.get(filePath);
         // Compare against aiSuggestedName (original AI suggestion) to detect user edits
         const aiOriginalName = originalResult?.aiSuggestedName || originalResult?.suggestedName;
         const wasEdited = originalResult && aiOriginalName !== suggestedName;
@@ -321,14 +337,14 @@ export function useProcessing() {
           newPath,
         });
 
-        removeResult(filePath);
+        remove(filePath);
 
         // Check if file was moved to a different directory
         const originalDir = filePath.substring(0, filePath.lastIndexOf('/'));
         const newDir = newPath.substring(0, newPath.lastIndexOf('/'));
         if (originalDir === newDir) {
           // Same directory - update the file in list
-          renameFileInList(filePath, newPath, suggestedName);
+          rename(filePath, newPath, suggestedName);
         } else {
           // Different directory (auto-organize moved it) - remove from current list
           const { files, completedFiles } = useFileStore.getState();
@@ -365,7 +381,7 @@ export function useProcessing() {
         });
       }
     },
-    [results, removeResult, renameFileInList, addToast, pushAction]
+    [addToast, pushAction]
   );
 
   // Keep original name - persists to database
@@ -375,9 +391,12 @@ export function useProcessing() {
         // Save to database first
         await markFilesAsSkipped([filePath]);
 
+        // Get current state to avoid stale closure issues
+        const { removeResult: remove, markComplete: complete } = useFileStore.getState();
+
         // Then update local state
-        removeResult(filePath);
-        markComplete(filePath);
+        remove(filePath);
+        complete(filePath);
 
         // Record feedback for analytics
         try {
@@ -396,27 +415,27 @@ export function useProcessing() {
         });
       }
     },
-    [removeResult, markComplete, addToast]
+    [addToast]
   );
 
   // Bulk keep original - marks selected files as skipped in database
   const keepOriginalSelected = useCallback(async () => {
-    const filesToSkip = Array.from(selectedFiles);
+    // Get current state to avoid stale closure issues
+    const currentSelectedFiles = useFileStore.getState().selectedFiles;
+    const filesToSkip = Array.from(currentSelectedFiles);
     if (filesToSkip.length === 0) return;
 
     try {
       const result = await markFilesAsSkipped(filesToSkip);
 
-      // Mark all as complete locally
+      // Mark all as complete locally using store actions
+      const { removeResult: remove, markComplete: complete, clearSelection: clear } = useFileStore.getState();
       filesToSkip.forEach((path) => {
-        removeResult(path);
-        markComplete(path);
+        remove(path);
+        complete(path);
       });
 
-      clearSelection();
-
-      // Don't call loadFiles() - it causes scroll position to reset
-      // The local state is already updated by removeResult and markComplete
+      clear();
 
       // Record feedback for all skipped files
       try {
@@ -444,7 +463,7 @@ export function useProcessing() {
         message: err instanceof Error ? err.message : 'Unknown error',
       });
     }
-  }, [selectedFiles, removeResult, markComplete, clearSelection, addToast]);
+  }, [addToast]);
 
   // Edit suggested name - persists to database
   const editSuggestedName = useCallback(

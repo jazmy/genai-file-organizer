@@ -65,3 +65,10 @@ yarn-error.log*
 # Playwright
 /playwright-report/
 /playwright/.cache/
+**/playwright-report/
+**/playwright/.cache/
+**/test-results/
+**/blob-report/
+**/.playwright/
+playwright.config.ts
+**/tests/*.spec.ts

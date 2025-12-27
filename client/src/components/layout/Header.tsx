@@ -258,6 +258,7 @@ export function Header({ onPreviewAll, onApplyAll, onKeepOriginalSelected, onDel
           >
             <CheckCircle2 className="w-4 h-4" />
             {selectedReadyToApplyCount > 0 ? 'Revert to Original' : 'Skip'}
+            {selectedFiles.size > 0 && ` (${selectedFiles.size})`}
           </Button>
 
           {/* Generate Names */}
@@ -274,6 +275,7 @@ export function Header({ onPreviewAll, onApplyAll, onKeepOriginalSelected, onDel
               <Eye className="w-4 h-4" />
             )}
             Generate Name
+            {selectedFiles.size > 0 && ` (${selectedFiles.size})`}
           </Button>
 
           {/* Approve Name - can work while processing since it only affects ready files */}

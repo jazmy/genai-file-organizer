@@ -88,13 +88,7 @@ export function FileGrid({
                 onSelect={(selected) => onSelect(file.path, selected)}
                 onNavigate={() => onNavigate(file.path)}
                 onRegenerate={() => onRegenerate(file.path)}
-                onApply={() => {
-                  // Look up result at call time to avoid stale closure issues
-                  const currentResult = results.get(file.path);
-                  if (currentResult?.suggestedName) {
-                    onApply(file.path, currentResult.suggestedName);
-                  }
-                }}
+                onApply={onApply}
                 onKeepOriginal={() => onKeepOriginal(file.path)}
                 onEdit={(newName) => onEdit(file.path, newName)}
                 onDelete={() => onDelete(file.path)}

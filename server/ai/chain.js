@@ -138,11 +138,12 @@ function getGlobalNamingRules() {
   }
 }
 
-export async function categorizeFile(fileInfo, imageBase64 = null) {
+export async function categorizeFile(fileInfo, imageBase64 = null, options = {}) {
   const { fileName, content, metadata } = fileInfo;
+  const { isRegeneration = false, feedback = null, previousCategory = null } = options;
   const startTime = Date.now();
 
-  logger.info(`[CHAIN STEP 1] Categorizing file: ${fileName}`);
+  logger.info(`[CHAIN STEP 1] Categorizing file: ${fileName}${isRegeneration ? ' (regeneration)' : ''}`);
   logger.info(`[CHAIN STEP 1] Has image: ${imageBase64 ? 'yes' : 'no'}, Content length: ${content?.length || 0}`);
 
   // Load categorization prompt from database
@@ -167,6 +168,22 @@ File to categorize: ${fileName}
 Content preview:
 ${content.substring(0, 2000)}
 `;
+  }
+
+  // Add regeneration context with user feedback if provided
+  if (isRegeneration && feedback && feedback.trim()) {
+    prompt += `
+=== REGENERATION CONTEXT ===
+The user has rejected a previous suggestion and provided the following feedback:
+"${feedback}"
+
+This feedback may indicate the file was miscategorized. Pay close attention to this feedback when determining the category.
+`;
+    if (previousCategory) {
+      prompt += `Previous category was: ${previousCategory} - the user may be indicating this was wrong.
+`;
+    }
+    logger.info(`[CHAIN STEP 1] Added user feedback to categorization: "${feedback}"`);
   }
 
   prompt += `
@@ -279,29 +296,36 @@ ${content.substring(0, 3000)}
   }
 
   // Add regeneration context if this is a regeneration request with feedback
-  if (isRegeneration && rejectedName) {
-    prompt += `
+  if (isRegeneration) {
+    logger.info(`[CHAIN STEP 2] Adding regeneration context - rejectedName: ${rejectedName}, feedback: ${feedback ? 'yes' : 'no'}`);
+
+    if (rejectedName) {
+      prompt += `
 === REGENERATION REQUEST ===
 The user has REJECTED the previous suggested filename. You MUST generate a DIFFERENT filename.
 
 REJECTED filename (DO NOT use this or anything similar): ${rejectedName}
 `;
-    if (feedback && feedback.trim()) {
-      prompt += `
+      if (feedback && feedback.trim()) {
+        prompt += `
 User feedback on why the rejected name was inadequate:
 "${feedback}"
 
 Use this feedback to generate a better filename that addresses the user's concerns.
 `;
-    } else {
-      prompt += `
+        logger.info(`[CHAIN STEP 2] Added user feedback to prompt: "${feedback}"`);
+      } else {
+        prompt += `
 The user did not provide specific feedback, but they want a different naming approach.
 Try to be more descriptive or use different aspects of the content.
 `;
-    }
-    prompt += `
+      }
+      prompt += `
 Generate a NEW filename that is meaningfully different from the rejected one.
 `;
+    } else {
+      logger.warn(`[CHAIN STEP 2] Regeneration requested but no rejectedName provided`);
+    }
   }
 
   // Extract meaningful info from original filename
@@ -474,9 +498,13 @@ export async function processFileChain(fileInfo, imageBase64 = null, options = {
   let error = null;
 
   try {
-    // Step 1: Categorize
-    logger.info(`[CHAIN] === STEP 1: CATEGORIZATION ===`);
-    categorizationResult = await categorizeFile(fileInfo, imageBase64);
+    // Step 1: Categorize (pass feedback for regeneration to help with recategorization)
+    logger.info(`[CHAIN] === STEP 1: CATEGORIZATION${isRegeneration ? ' (with regeneration context)' : ''} ===`);
+    categorizationResult = await categorizeFile(fileInfo, imageBase64, {
+      isRegeneration,
+      feedback,
+      previousCategory: null, // We don't have the previous category here, but feedback should help
+    });
     logger.info(`[CHAIN] Category result: ${categorizationResult.category}`);
 
     // Log categorization step

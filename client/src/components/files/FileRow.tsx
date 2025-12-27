@@ -30,7 +30,7 @@ interface FileRowProps {
   onSelect: (selected: boolean) => void;
   onNavigate: () => void;
   onRegenerate: () => void;
-  onApply: () => void;
+  onApply: (filePath: string, suggestedName: string) => void;
   onKeepOriginal: () => void;
   onEdit: (newName: string) => void;
   onDelete: () => void;
@@ -226,7 +226,12 @@ export function FileRow({
                       </Tooltip>
                       <Tooltip content="Approve Name">
                         <button
-                          onClick={onApply}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (result?.suggestedName) {
+                              onApply(file.path, result.suggestedName);
+                            }
+                          }}
                           className="p-1 text-zinc-400 hover:text-green-500 hover:bg-zinc-100 dark:hover:bg-zinc-700 rounded transition-colors"
                         >
                           <CheckCircle className="w-3 h-3" />

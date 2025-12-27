@@ -58,6 +58,7 @@ export function FileBrowser({
 
   // Regenerate modal state
   const [regenerateModalFile, setRegenerateModalFile] = useState<FileItem | null>(null);
+  const [isRegenerateModalLoading, setIsRegenerateModalLoading] = useState(false);
 
   // Compute which files are truly "processing":
   // - regeneratingFiles: always show as processing (actively waiting for new AI result)
@@ -165,17 +166,28 @@ export function FileBrowser({
   }, [results, onRegenerate]);
 
   const handleCloseRegenerateModal = useCallback(() => {
-    setRegenerateModalFile(null);
-  }, []);
+    if (!isRegenerateModalLoading) {
+      setRegenerateModalFile(null);
+    }
+  }, [isRegenerateModalLoading]);
 
   const handleRegenerateWithFeedback = useCallback((feedback: string) => {
-    if (!regenerateModalFile) return;
+    if (!regenerateModalFile || isRegenerateModalLoading) return;
 
     const filePath = regenerateModalFile.path;
-    // Close modal immediately, let regeneration happen in background
-    setRegenerateModalFile(null);
+
+    // Show loading state briefly, then close modal
+    setIsRegenerateModalLoading(true);
+
+    // Start regeneration
     onRegenerate(filePath, feedback);
-  }, [regenerateModalFile, onRegenerate]);
+
+    // Close modal after a brief delay to show the loading state
+    setTimeout(() => {
+      setIsRegenerateModalLoading(false);
+      setRegenerateModalFile(null);
+    }, 500);
+  }, [regenerateModalFile, onRegenerate, isRegenerateModalLoading]);
 
   const FileComponent = viewMode === 'grid' ? FileGrid : FileList;
 
@@ -553,6 +565,7 @@ export function FileBrowser({
         onRegenerate={handleRegenerateWithFeedback}
         originalName={regenerateModalFile?.name || ''}
         suggestedName={regenerateModalFile ? (results.get(regenerateModalFile.path)?.suggestedName || '') : ''}
+        isLoading={isRegenerateModalLoading}
       />
     </div>
   );

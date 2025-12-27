@@ -12,7 +12,7 @@ class LoggerService {
     this.enabled = true;
     this.logPrompts = true;
     this.logResponses = true;
-    this.maxBodySize = 10000;
+    this.maxBodySize = 50000; // Increased to capture full prompts including regeneration context
   }
 
   /**
