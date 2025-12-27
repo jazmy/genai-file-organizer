@@ -62,6 +62,9 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# Blog drafts
+blog.md
+
 # Playwright
 /playwright-report/
 /playwright/.cache/

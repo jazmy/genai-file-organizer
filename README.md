@@ -82,6 +82,30 @@ Choose between **Ollama** (easiest setup) or **llama.cpp** (maximum performance)
 |:----------------:|:---------:|:--------:|
 | ![Pending](docs/screenshots/04-pending-approval.png) | ![List](docs/screenshots/05-list-view.png) | ![Settings](docs/screenshots/06-settings.png) |
 
+## Documentation
+
+The Web UI includes built-in documentation accessible at `http://localhost:3000/docs`:
+
+### User Guide
+- [Getting Started](/docs/user/getting-started) - Quick start guide for new users
+- [File Browser](/docs/user/file-browser) - How to browse and select files
+- [AI Processing](/docs/user/ai-processing) - Understanding the AI renaming process
+- [Settings](/docs/user/settings) - Configuring your preferences
+- [Supported File Types](/docs/user/file-types) - Complete list of supported formats
+
+### Admin Guide
+- [Installation](/docs/admin/installation) - Detailed setup instructions
+- [Configuration](/docs/admin/configuration) - Server and AI configuration options
+- [CLI Reference](/docs/admin/cli) - Command-line interface documentation
+- [API Reference](/docs/admin/api) - REST API endpoints
+- [Troubleshooting](/docs/admin/troubleshooting) - Common issues and solutions
+
+### Logs & Monitoring
+- [Logs Overview](/docs/logs/overview) - Understanding the logging system
+- [AI Logs](/docs/logs/ai-logs) - Viewing AI processing logs
+- [API Logs](/docs/logs/api-logs) - API request/response logs
+- [Effectiveness](/docs/logs/effectiveness) - Prompt performance metrics
+
 ## Prerequisites
 
 - **Node.js 18+** - [Install Node.js](https://nodejs.org/)
@@ -569,4 +593,4 @@ ollama pull llava:7b
 
 ## License
 
-MIT
+This project is free to use, including for commercial purposes. However, **you may not sell or redistribute this software** for profit. See [LICENSE](LICENSE) for details.
