@@ -1,8 +1,76 @@
 # GenAI File Organizer
 
-AI-powered local file organizer using Ollama. Automatically rename and organize files based on their content analysis.
+**Local Vision-Language Models for Intelligent File Organization**
+
+A self-hosted file organization system powered by multimodal AI. Analyzes file contents using vision-language models (VLMs) running entirely on your local machine—no cloud APIs, no data leaving your computer.
 
 ![Main Dashboard](docs/screenshots/01-main-dashboard.png)
+
+## Why GenAI File Organizer?
+
+| 🔒 **100% Private** | ⚡ **Fully Automated** | 🧠 **AI-Powered** |
+|:-------------------:|:---------------------:|:-----------------:|
+| Runs entirely on your machine. No cloud APIs, no data transmission. Your files never leave your computer. | Batch process hundreds of files, watch folders for new additions, or use the CLI for automation. | Vision-language models understand document layouts, image content, and context—not just filenames. |
+
+## How It Works
+
+GenAI File Organizer uses **Ollama** or **llama.cpp** to run vision-language models locally:
+
+```
+┌─────────────┐    ┌──────────────┐    ┌─────────────┐    ┌──────────────┐    ┌──────────────┐
+│ File Input  │───▶│  Extractor   │───▶│ Categorizer │───▶│    Namer     │───▶│  Validator   │
+│ (40+ types) │    │ (content/OCR)│    │    (VLM)    │    │    (VLM)     │    │ (LLM-Judge)  │
+└─────────────┘    └──────────────┘    └─────────────┘    └──────────────┘    └──────────────┘
+```
+
+1. **Extract** content from 40+ file types (PDFs, images, documents, code, audio, video)
+2. **Categorize** using AI to understand what type of document/file it is
+3. **Generate** semantic filenames following customizable naming conventions
+4. **Validate** through LLM-as-judge ensuring consistent, high-quality output
+
+## Powerful Features
+
+### 🎯 Built-in Evaluation System
+Track how well your prompts perform with acceptance rate metrics, edit distance tracking, and low-performing category alerts. See exactly which file types need prompt tuning.
+
+### 📝 30+ Pre-seeded Prompts
+Get accurate results immediately with category-specific prompts for invoices, receipts, screenshots, meeting notes, contracts, code files, and more. No prompt engineering required to get started.
+
+### ✅ LLM-as-Judge Validation
+Every generated filename is validated by the AI itself. If a name doesn't meet quality standards, the system automatically regenerates with feedback—up to 3 retries for optimal results.
+
+### 👁️ Watch Mode
+Monitor folders for new files and automatically process them as they appear. Perfect for Downloads folders, scanner output, or any high-traffic directory.
+
+### ↩️ Full History & Undo
+Every rename is tracked with complete audit history. Made a mistake? Undo any rename instantly.
+
+### 🔌 Multi-Provider Support
+Choose between **Ollama** (easiest setup) or **llama.cpp** (maximum performance) as your inference backend.
+
+## Example Transformations
+
+| Original | AI-Generated Name | How It Knew |
+|----------|-------------------|-------------|
+| `IMG_4521.jpg` | `receipt_costco_groceries_2024-03-12.jpg` | VLM detected receipt layout, extracted vendor and date |
+| `Screenshot 2024-03-15...` | `ss_github_pr-review_api-refactor.png` | Recognized GitHub UI, read PR title from image |
+| `Document (1).pdf` | `contract_apartment-lease_seattle_2024.pdf` | Parsed PDF text, identified document type and entities |
+| `recording.m4a` | `meeting_product-roadmap_q2-planning.m4a` | Whisper transcription + topic extraction |
+| `notes.txt` | `prd_mobile-app-redesign_v2.txt` | Analyzed content structure, detected PRD format |
+
+## Supported File Types
+
+| Category | Extensions |
+|----------|-----------|
+| **Documents** | PDF, DOCX, DOC, RTF, TXT, MD, HTML |
+| **Spreadsheets** | XLSX, XLS, CSV, TSV |
+| **Presentations** | PPTX, PPT |
+| **Images** | PNG, JPG, JPEG, GIF, WEBP, HEIC, TIFF |
+| **Design** | PSD, AI, SVG, Sketch, Figma, XD |
+| **Code** | 30+ languages (Python, JS/TS, Go, Rust, etc.) |
+| **Audio** | MP3, WAV, FLAC, M4A, AAC |
+| **Video** | MP4, MOV, AVI, MKV, WEBM |
+| **Archives** | ZIP, DMG, TAR, GZ, RAR |
 
 ## Screenshots
 
@@ -13,33 +81,6 @@ AI-powered local file organizer using Ollama. Automatically rename and organize 
 | Pending Approval | List View | Settings |
 |:----------------:|:---------:|:--------:|
 | ![Pending](docs/screenshots/04-pending-approval.png) | ![List](docs/screenshots/05-list-view.png) | ![Settings](docs/screenshots/06-settings.png) |
-
-## Features
-
-- **🤖 Local AI Processing** - Uses Ollama with qwen2-vl:8b (vision-language model) for 100% offline processing
-- **📁 Smart Renaming** - Analyzes file content to generate descriptive, consistent filenames
-- **🗂️ Auto-Filing** - Optionally moves files to folders based on content type (disabled by default)
-- **👁️ Vision Analysis** - Understands images, screenshots, and scanned documents
-- **🎵 Audio/Video Support** - Metadata extraction with optional Whisper transcription
-- **📺 Watch Mode** - Monitors folders and processes new files automatically
-- **🌐 Web UI** - Beautiful browser-based interface for easy file management
-- **⌨️ CLI** - Powerful command-line interface for automation
-
-## Supported File Types
-
-| Category | Extensions |
-|----------|------------|
-| Documents | PDF, DOCX, RTF, TXT, HTML, MD |
-| Spreadsheets | XLSX, XLS, CSV, TSV |
-| Presentations | PPTX, PPT |
-| Code | PY, JS, TS, JSON, CSS, HTML |
-| Images | PNG, JPG, JPEG, GIF, WEBP, HEIC, SVG |
-| Design | PSD, AI, XD, Sketch |
-| Audio | MP3, WAV, FLAC, M4A, AAC |
-| Video | MP4, MOV, AVI, MKV, WEBM |
-| Archives | ZIP, DMG, TAR, GZ, RAR |
-| Fonts | TTF, OTF, WOFF, WOFF2 |
-| Calendar | ICS, ICAL |
 
 ## Prerequisites
 
