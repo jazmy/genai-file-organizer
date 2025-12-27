@@ -1,6 +1,6 @@
-# Contributing to GenOrganize
+# Contributing to GenAI File Organizer
 
-Thank you for your interest in contributing to GenOrganize! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to GenAI File Organizer! This document provides guidelines and instructions for contributing.
 
 ## Getting Started
 
@@ -22,7 +22,7 @@ Thank you for your interest in contributing to GenOrganize! This document provid
 
 1. Copy configuration examples:
    ```bash
-   cp config/genorganize.config.example.json config/genorganize.config.json
+   cp config/config.example.json config/config.json
    cp client/.env.example client/.env.local
    ```
 
@@ -81,4 +81,4 @@ Feature requests are welcome! Please:
 
 Feel free to open an issue for any questions about contributing.
 
-Thank you for helping improve GenOrganize!
+Thank you for helping improve GenAI File Organizer!

@@ -5,7 +5,7 @@ export default function TroubleshootingPage() {
     <div className="docs-content">
       <h1>Troubleshooting</h1>
       <p className="lead">
-        Solutions for common issues you may encounter when using GenOrganize.
+        Solutions for common issues you may encounter when using GenAI File Organizer.
       </p>
 
       <h2>Quick Diagnostics</h2>
@@ -182,7 +182,7 @@ chmod 755 data/`}</code></pre>
       <p><strong>Symptoms:</strong> &quot;SQLITE_BUSY&quot; errors</p>
       <p><strong>Solutions:</strong></p>
       <ol>
-        <li>Stop all GenOrganize processes</li>
+        <li>Stop all GenAI File Organizer processes</li>
         <li>Check for stale lock files:
           <pre><code>{`ls -la data/*.db-*
 rm data/*.db-wal data/*.db-shm`}</code></pre>
@@ -240,7 +240,7 @@ nvm use 18`}</code></pre>
       <p><strong>Symptoms:</strong> Files renamed with wrong extensions</p>
       <p><strong>Solutions:</strong></p>
       <ul>
-        <li>GenOrganize always preserves the original file&apos;s extension</li>
+        <li>GenAI File Organizer always preserves the original file&apos;s extension</li>
         <li>If you see wrong extensions, check the <code>responseValidator.js</code> file</li>
         <li>The AI output extension is always ignored; only original extension is used</li>
       </ul>

@@ -5,7 +5,7 @@ export default function AILogsPage() {
     <div className="docs-content">
       <h1>AI Logs</h1>
       <p className="lead">
-        The AI Logs tab shows every file processed by GenOrganize. View the exact prompts sent to the AI and its responses for debugging and improvement.
+        The AI Logs tab shows every file processed by GenAI File Organizer. View the exact prompts sent to the AI and its responses for debugging and improvement.
       </p>
 
       <img

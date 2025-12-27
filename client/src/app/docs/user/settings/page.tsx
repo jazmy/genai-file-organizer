@@ -5,7 +5,7 @@ export default function SettingsPage() {
     <div className="docs-content">
       <h1>Settings</h1>
       <p className="lead">
-        Configure GenOrganize to match your workflow. Access file type management, logs, and backup/restore your settings.
+        Configure GenAI File Organizer to match your workflow. Access file type management, logs, and backup/restore your settings.
       </p>
 
       <h2>Accessing Settings</h2>

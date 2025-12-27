@@ -5,7 +5,7 @@ export default function ConfigurationPage() {
     <div className="docs-content">
       <h1>Configuration</h1>
       <p className="lead">
-        Configure GenOrganize using environment variables and configuration files. This guide covers all available options.
+        Configure GenAI File Organizer using environment variables and configuration files. This guide covers all available options.
       </p>
 
       <h2>Server Environment Variables</h2>
@@ -40,7 +40,7 @@ export default function ConfigurationPage() {
       </table>
 
       <h3>AI Provider Settings</h3>
-      <p>GenOrganize supports two LLM backends: Ollama and llama-server. Configure in the web UI under Settings → AI Provider.</p>
+      <p>GenAI File Organizer supports two LLM backends: Ollama and llama-server. Configure in the web UI under Settings → AI Provider.</p>
 
       <h4>Ollama Settings</h4>
       <table>
@@ -308,7 +308,7 @@ RATE_LIMIT_MAX_QUEUE=100`}</code></pre>
       </ul>
 
       <h2>Database Configuration</h2>
-      <p>GenOrganize uses SQLite by default. The database file is stored at:</p>
+      <p>GenAI File Organizer uses SQLite by default. The database file is stored at:</p>
       <pre><code>server/data/genorganize.db</code></pre>
 
       <h3>Database Migrations</h3>

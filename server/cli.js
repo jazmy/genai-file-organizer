@@ -99,7 +99,7 @@ program
       process.exit(1);
     }
 
-    console.log(chalk.bold('\n📁 GenOrganize Watch Mode\n'));
+    console.log(chalk.bold('\n📁 GenAI File Organizer Watch Mode\n'));
     console.log(chalk.gray('Watching directories:'));
     watchDirs.forEach((dir) => console.log(chalk.cyan(`  • ${dir}`)));
     console.log(chalk.gray('\nPress Ctrl+C to stop\n'));
@@ -193,7 +193,7 @@ program
   .command('doctor')
   .description('Check system configuration and dependencies')
   .action(async () => {
-    console.log(chalk.bold('\n🔍 GenOrganize System Check\n'));
+    console.log(chalk.bold('\n🔍 GenAI File Organizer System Check\n'));
 
     console.log(chalk.gray('Checking Ollama connection...'));
     const ollamaResult = await testConnection();

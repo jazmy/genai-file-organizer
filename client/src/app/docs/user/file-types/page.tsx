@@ -5,7 +5,7 @@ export default function FileTypesPage() {
     <div className="docs-content">
       <h1>File Types & Customization</h1>
       <p className="lead">
-        GenOrganize uses AI to categorize files and generate appropriate names. You can fully customize how files are categorized, named, and organized.
+        GenAI File Organizer uses AI to categorize files and generate appropriate names. You can fully customize how files are categorized, named, and organized.
       </p>
 
       <h2>Accessing File Types</h2>
@@ -75,7 +75,7 @@ export default function FileTypesPage() {
       </ul>
 
       <h2>Default File Types</h2>
-      <p>GenOrganize comes with 30+ pre-configured file types:</p>
+      <p>GenAI File Organizer comes with 30+ pre-configured file types:</p>
       <table>
         <thead>
           <tr>
@@ -279,7 +279,7 @@ Output ONLY the filename, nothing else.`}</code></pre>
       </ol>
 
       <h2>Transcript vs Meeting Notes</h2>
-      <p>GenOrganize distinguishes between these related but different file types:</p>
+      <p>GenAI File Organizer distinguishes between these related but different file types:</p>
       <table>
         <thead>
           <tr>

@@ -5,7 +5,7 @@ export default function CLIReferencePage() {
     <div className="docs-content">
       <h1>CLI Reference</h1>
       <p className="lead">
-        GenOrganize includes a powerful command-line interface for batch processing, automation, and scripting.
+        GenAI File Organizer includes a powerful command-line interface for batch processing, automation, and scripting.
       </p>
 
       <h2>Getting Started</h2>
@@ -261,7 +261,7 @@ echo "$(date): Downloads organized" >> /var/log/genorganize.log`}</code></pre>
       <h3>Watch as Service (systemd)</h3>
       <pre><code>{`# /etc/systemd/system/genorganize-watch.service
 [Unit]
-Description=GenOrganize Watch Service
+Description=GenAI File Organizer Watch Service
 After=network.target
 
 [Service]

@@ -1,4 +1,4 @@
-// Jest setup file for GenOrganize Server tests
+// Jest setup file for GenAI File Organizer Server tests
 
 // Mock console.error to suppress noisy output during tests
 const originalError = console.error;

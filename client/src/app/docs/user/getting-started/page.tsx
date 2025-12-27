@@ -5,7 +5,7 @@ export default function GettingStartedPage() {
     <div className="docs-content">
       <h1>Getting Started</h1>
       <p className="lead">
-        Get up and running with GenOrganize in minutes. This guide will walk you through launching the application and processing your first files.
+        Get up and running with GenAI File Organizer in minutes. This guide will walk you through launching the application and processing your first files.
       </p>
 
       <h2>Prerequisites</h2>

@@ -333,7 +333,7 @@ export function Sidebar({
     >
       {/* Header */}
       <div className="p-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between">
-        <h1 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">GenOrganize</h1>
+        <h1 className="font-semibold text-lg text-zinc-900 dark:text-zinc-100">GenAI File Organizer</h1>
         <Button variant="ghost" size="icon" onClick={toggleSidebar}>
           <PanelLeftClose className="w-5 h-5" />
         </Button>

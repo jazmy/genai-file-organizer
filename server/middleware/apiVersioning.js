@@ -83,7 +83,7 @@ export function deprecatedEndpoint(message, sunsetDate) {
 export function getApiInfo() {
   return {
     version: API_VERSION,
-    name: 'GenOrganize API',
+    name: 'GenAI File Organizer API',
     description: 'AI-powered file organization API',
     endpoints: {
       files: '/api/files',

@@ -1,10 +1,10 @@
-# GenOrganize Client
+# GenAI File Organizer - Client
 
-Web-based UI for GenOrganize - an AI-powered file organizer.
+Web-based UI for GenAI File Organizer - an AI-powered file organizer.
 
 ## Overview
 
-This is the frontend for GenOrganize, built with Next.js 14, React, and Tailwind CSS. It provides a modern, responsive interface for managing and organizing files using AI-powered naming suggestions.
+This is the frontend for GenAI File Organizer, built with Next.js 14, React, and Tailwind CSS. It provides a modern, responsive interface for managing and organizing files using AI-powered naming suggestions.
 
 ## Features
 
@@ -21,7 +21,7 @@ This is the frontend for GenOrganize, built with Next.js 14, React, and Tailwind
 ### Prerequisites
 
 - Node.js 18+
-- GenOrganize server running on port 3001
+- GenAI File Organizer server running on port 3001
 
 ### Installation
 

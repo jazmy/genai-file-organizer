@@ -5,7 +5,7 @@ export default function AIProcessingPage() {
     <div className="docs-content">
       <h1>AI Processing</h1>
       <p className="lead">
-        GenOrganize uses vision-language AI models to analyze your files and generate meaningful, descriptive filenames. Learn how the AI works and how to get the best results.
+        GenAI File Organizer uses vision-language AI models to analyze your files and generate meaningful, descriptive filenames. Learn how the AI works and how to get the best results.
       </p>
 
       <h2>How It Works</h2>

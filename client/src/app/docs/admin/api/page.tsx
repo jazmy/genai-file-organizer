@@ -5,7 +5,7 @@ export default function APIReferencePage() {
     <div className="docs-content">
       <h1>API Reference</h1>
       <p className="lead">
-        GenOrganize provides a REST API for programmatic access to all features. The API runs on port 3001 by default.
+        GenAI File Organizer provides a REST API for programmatic access to all features. The API runs on port 3001 by default.
       </p>
 
       <h2>Base URL</h2>

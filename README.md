@@ -1,6 +1,18 @@
-# GenOrganize
+# GenAI File Organizer
 
 AI-powered local file organizer using Ollama. Automatically rename and organize files based on their content analysis.
+
+![Main Dashboard](docs/screenshots/01-main-dashboard.png)
+
+## Screenshots
+
+| Main Dashboard | File Selection | Processing |
+|:--------------:|:--------------:|:----------:|
+| ![Dashboard](docs/screenshots/01-main-dashboard.png) | ![Selection](docs/screenshots/02-file-selection.png) | ![Processing](docs/screenshots/03-processing.png) |
+
+| Pending Approval | List View | Settings |
+|:----------------:|:---------:|:--------:|
+| ![Pending](docs/screenshots/04-pending-approval.png) | ![List](docs/screenshots/05-list-view.png) | ![Settings](docs/screenshots/06-settings.png) |
 
 ## Features
 
@@ -40,7 +52,7 @@ AI-powered local file organizer using Ollama. Automatically rename and organize 
 
 ## Fresh Machine Setup
 
-Follow these steps to set up GenOrganize on a new machine.
+Follow these steps to set up GenAI File Organizer on a new machine.
 
 ### 1. Install Homebrew (macOS only)
 
@@ -186,12 +198,12 @@ whisper-cpp --help
 | `medium` | 1.5 GB | Slow | High |
 | `large` | 2.9 GB | Slowest | Highest |
 
-### 7. Clone and Install GenOrganize
+### 7. Clone and Install GenAI File Organizer
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/genorganize.git
-cd genorganize
+git clone https://github.com/yourusername/genai-file-organizer.git
+cd genai-file-organizer
 
 # Install all dependencies (server + client)
 npm run install:all
@@ -214,7 +226,7 @@ cp config/genorganize.config.example.json config/genorganize.config.json
 echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > client/.env.local
 ```
 
-**Note:** The `config/genorganize.config.json` and `data/genorganize.db` files are gitignored to protect your personal file history and settings. Each user should create their own config from the example file.
+**Note:** The config file and database are gitignored to protect your personal file history and settings. Each user should create their own config from the example file.
 
 **Server environment variables** (`server/.env`):
 
@@ -237,7 +249,7 @@ echo "NEXT_PUBLIC_API_URL=http://localhost:3001" > client/.env.local
 npm run doctor
 ```
 
-### 10. Run GenOrganize
+### 10. Run GenAI File Organizer
 
 #### CLI Mode
 
@@ -290,7 +302,7 @@ npm run web
 
 ```bash
 # Process files
-genorganize process <path> [options]
+genai-organizer process <path> [options]
   -r, --recursive     Process directories recursively
   -d, --dry-run       Preview changes without applying
   -m, --move          Move files to organized folders
@@ -300,30 +312,30 @@ genorganize process <path> [options]
   --video-mode        Video processing mode (metadata|keyframes|transcribe)
 
 # Watch folders
-genorganize watch [directories...] [options]
+genai-organizer watch [directories...] [options]
   -d, --dry-run       Preview changes without applying
   -m, --move          Move files to organized folders
   -p, --processed     Move processed files to this folder
 
 # View history
-genorganize history [options]
+genai-organizer history [options]
   -n, --limit         Number of entries to show
   -a, --all           Include undone entries
 
 # Undo a rename
-genorganize undo <historyId>
+genai-organizer undo <historyId>
 
 # System check
-genorganize doctor
+genai-organizer doctor
 
 # Configuration
-genorganize config --init    # Create config file
-genorganize config --show    # Show current config
+genai-organizer config --init    # Create config file
+genai-organizer config --show    # Show current config
 ```
 
 ## Configuration
 
-Create `genorganize.config.json` in your project root:
+Create a config file in your project root:
 
 ```json
 {
@@ -412,7 +424,7 @@ code_python_data-scraper-v2.py
 ## Project Structure
 
 ```
-genorganize/
+genai-file-organizer/
 ├── server/               # Backend (Node.js + Express)
 │   ├── index.js          # Main exports
 │   ├── cli.js            # CLI interface

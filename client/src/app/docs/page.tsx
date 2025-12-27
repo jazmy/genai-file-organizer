@@ -4,9 +4,9 @@ import { Book, Settings, Activity, ChevronRight, Zap, FileText, Terminal, BarCha
 export default function DocsPage() {
   return (
     <div className="docs-content">
-      <h1>GenOrganize Documentation</h1>
+      <h1>GenAI File Organizer Documentation</h1>
       <p className="lead">
-        Welcome to the GenOrganize documentation. Choose a guide based on your needs.
+        Welcome to the GenAI File Organizer documentation. Choose a guide based on your needs.
       </p>
 
       <div className="grid md:grid-cols-2 gap-6 not-prose mt-8">
@@ -22,7 +22,7 @@ export default function DocsPage() {
             User Guide
           </h3>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Learn how to use GenOrganize to organize and rename your files with AI.
+            Learn how to use GenAI File Organizer to organize and rename your files with AI.
           </p>
         </Link>
 
@@ -38,7 +38,7 @@ export default function DocsPage() {
             Admin Guide
           </h3>
           <p className="text-sm text-zinc-600 dark:text-zinc-400">
-            Installation, configuration, and administration of GenOrganize.
+            Installation, configuration, and administration of GenAI File Organizer.
           </p>
         </Link>
 
@@ -69,7 +69,7 @@ export default function DocsPage() {
         </thead>
         <tbody>
           <tr>
-            <td>Install GenOrganize</td>
+            <td>Install GenAI File Organizer</td>
             <td><Link href="/docs/admin/installation" className="text-blue-500 hover:underline">Admin Guide &rarr; Installation</Link></td>
           </tr>
           <tr>

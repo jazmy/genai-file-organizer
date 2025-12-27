@@ -45,12 +45,12 @@ export default function UserGuidePage() {
     <div className="docs-content">
       <h1>User Guide</h1>
       <p className="lead">
-        Welcome to GenOrganize! This comprehensive guide covers every feature of the application to help you organize and rename your files using AI.
+        Welcome to GenAI File Organizer! This comprehensive guide covers every feature of the application to help you organize and rename your files using AI.
       </p>
 
       <img
         src="/docs/main-interface.png"
-        alt="GenOrganize Main Interface"
+        alt="GenAI File Organizer Main Interface"
         style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem', border: '1px solid #3f3f46' }}
       />
 

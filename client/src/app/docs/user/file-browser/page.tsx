@@ -5,7 +5,7 @@ export default function FileBrowserPage() {
     <div className="docs-content">
       <h1>File Browser</h1>
       <p className="lead">
-        The file browser is the heart of GenOrganize. Learn how to navigate folders, select files, filter results, and perform bulk operations.
+        The file browser is the heart of GenAI File Organizer. Learn how to navigate folders, select files, filter results, and perform bulk operations.
       </p>
 
       <h2>Navigation</h2>

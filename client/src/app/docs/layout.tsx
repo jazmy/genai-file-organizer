@@ -87,7 +87,7 @@ export default function DocsLayout({ children }: { children: React.ReactNode }) 
             </h1>
           </div>
           <div className="flex items-center gap-2 text-sm text-zinc-500">
-            <span>GenOrganize v1.0</span>
+            <span>GenAI File Organizer v1.0</span>
           </div>
         </div>
       </header>

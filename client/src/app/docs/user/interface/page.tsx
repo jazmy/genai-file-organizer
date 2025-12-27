@@ -5,7 +5,7 @@ export default function InterfacePage() {
     <div className="docs-content">
       <h1>Interface Overview</h1>
       <p className="lead">
-        GenOrganize has a clean, intuitive interface designed for efficient file management. Learn about each component and how they work together.
+        GenAI File Organizer has a clean, intuitive interface designed for efficient file management. Learn about each component and how they work together.
       </p>
 
       <img

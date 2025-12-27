@@ -5,7 +5,7 @@ export default function LogsOverviewPage() {
     <div className="docs-content">
       <h1>Logs Overview</h1>
       <p className="lead">
-        The Logs & Evaluation system provides complete transparency into how GenOrganize processes your files. Every AI interaction is logged for debugging and improvement.
+        The Logs & Evaluation system provides complete transparency into how GenAI File Organizer processes your files. Every AI interaction is logged for debugging and improvement.
       </p>
 
       <h2>Dashboard Layout</h2>

@@ -1,5 +1,5 @@
 {
-  "name": "genorganize",
+  "name": "genai-file-organizer",
   "version": "1.0.0",
   "description": "AI-powered local file organizer using Ollama or llama.cpp",
   "private": true,

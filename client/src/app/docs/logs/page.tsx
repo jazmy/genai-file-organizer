@@ -60,7 +60,7 @@ export default function LogsGuidePage() {
       </div>
 
       <h2>Why Use Logs & Evaluation?</h2>
-      <p>The logging system provides complete transparency into how GenOrganize processes your files:</p>
+      <p>The logging system provides complete transparency into how GenAI File Organizer processes your files:</p>
       <ul>
         <li><strong>Debug issues</strong>: See exactly what the AI received and how it responded</li>
         <li><strong>Track performance</strong>: Monitor response times and success rates</li>

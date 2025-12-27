@@ -5,7 +5,7 @@ export default function InstallationPage() {
     <div className="docs-content">
       <h1>Installation</h1>
       <p className="lead">
-        Get GenOrganize up and running on your system. This guide covers system requirements, installation steps, and initial configuration.
+        Get GenAI File Organizer up and running on your system. This guide covers system requirements, installation steps, and initial configuration.
       </p>
 
       <h2>System Requirements</h2>
@@ -158,7 +158,7 @@ curl http://127.0.0.1:8080/health`}</code></pre>
       </table>
       <p><strong>Context size tip:</strong> With <code>-np 4</code> and <code>-c 16384</code>, each slot gets 4096 tokens. For vision tasks with validation, use at least <code>-c 16384</code>.</p>
 
-      <h3>Step 4: Clone & Install GenOrganize</h3>
+      <h3>Step 4: Clone & Install GenAI File Organizer</h3>
       <pre><code>{`# Clone the repository
 git clone <repository-url>
 cd genorganize

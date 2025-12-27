@@ -5,7 +5,7 @@ export default function APILogsPage() {
     <div className="docs-content">
       <h1>API Logs</h1>
       <p className="lead">
-        The API Logs tab shows all HTTP requests made to the GenOrganize server. Use this for debugging communication issues and monitoring API performance.
+        The API Logs tab shows all HTTP requests made to the GenAI File Organizer server. Use this for debugging communication issues and monitoring API performance.
       </p>
 
       <img

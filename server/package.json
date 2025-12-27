@@ -1,7 +1,7 @@
 {
-  "name": "genorganize-server",
+  "name": "genai-file-organizer-server",
   "version": "1.0.0",
-  "description": "GenOrganize API server - AI-powered file organizer",
+  "description": "GenAI File Organizer API server - AI-powered file organizer",
   "author": "Your Name <your.email@example.com>",
   "license": "PolyForm-Noncommercial-1.0.0",
   "repository": {

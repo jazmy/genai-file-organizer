@@ -39,12 +39,12 @@ export default function AdminGuidePage() {
     <div className="docs-content">
       <h1>Admin Guide</h1>
       <p className="lead">
-        This guide covers installation, configuration, and administration of GenOrganize.
+        This guide covers installation, configuration, and administration of GenAI File Organizer.
       </p>
 
       <img
         src="/docs/settings.png"
-        alt="GenOrganize Settings Page"
+        alt="GenAI File Organizer Settings Page"
         style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem', border: '1px solid #3f3f46' }}
       />
 

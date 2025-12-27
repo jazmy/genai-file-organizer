@@ -1,7 +1,7 @@
 {
-  "name": "genorganize-client",
+  "name": "genai-file-organizer-client",
   "version": "1.0.0",
-  "description": "GenOrganize Web Client - AI-powered file organizer UI",
+  "description": "GenAI File Organizer Web Client - AI-powered file organizer UI",
   "private": true,
   "author": "Your Name <your.email@example.com>",
   "license": "PolyForm-Noncommercial-1.0.0",

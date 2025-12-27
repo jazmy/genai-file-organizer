@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "GenOrganize",
+  title: "GenAI File Organizer",
   description: "AI-powered file organization and renaming",
 };
 

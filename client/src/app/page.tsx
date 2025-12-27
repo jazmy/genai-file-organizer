@@ -91,7 +91,7 @@ function HomeContent() {
       <div className="h-screen w-screen flex items-center justify-center bg-zinc-100 dark:bg-zinc-950">
         <div className="flex flex-col items-center gap-4">
           <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" aria-label="Loading" />
-          <p className="text-zinc-600 dark:text-zinc-400">Loading GenOrganize...</p>
+          <p className="text-zinc-600 dark:text-zinc-400">Loading GenAI File Organizer...</p>
         </div>
       </div>
     );

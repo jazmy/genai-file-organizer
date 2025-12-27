@@ -2063,7 +2063,7 @@ async function startServer() {
   }
 
   httpServer.listen(PORT, () => {
-    logger.info(`GenOrganize API server running on http://localhost:${PORT}`);
+    logger.info(`GenAI File Organizer API server running on http://localhost:${PORT}`);
     logger.info(`WebSocket server ready`);
 
     // Schedule automatic weekly log cleanup (keeps logs for 7 days)
