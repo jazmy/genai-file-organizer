@@ -160,14 +160,32 @@ rm -rf server/temp/*`}</code></pre>
 
       <h2>Database Issues</h2>
 
+      <h3>Database Readonly</h3>
+      <p><strong>Symptoms:</strong> &quot;attempt to write a readonly database&quot; errors, settings won&apos;t save</p>
+      <p><strong>Solutions:</strong></p>
+      <ol>
+        <li><strong>Restart the server</strong> - this usually fixes stale SQLite connections:
+          <pre><code>{`# Stop the server (Ctrl+C) then start again
+npm run server`}</code></pre>
+        </li>
+        <li>If the issue persists, check file permissions:
+          <pre><code>{`ls -la data/genorganize.db
+# Should show -rw-r--r-- (644) permissions
+
+# Fix permissions if needed
+chmod 644 data/genorganize.db
+chmod 755 data/`}</code></pre>
+        </li>
+      </ol>
+
       <h3>Database Locked</h3>
       <p><strong>Symptoms:</strong> &quot;SQLITE_BUSY&quot; errors</p>
       <p><strong>Solutions:</strong></p>
       <ol>
         <li>Stop all GenOrganize processes</li>
         <li>Check for stale lock files:
-          <pre><code>{`ls -la server/data/*.db-*
-rm server/data/*.db-wal server/data/*.db-shm`}</code></pre>
+          <pre><code>{`ls -la data/*.db-*
+rm data/*.db-wal data/*.db-shm`}</code></pre>
         </li>
         <li>Restart the server</li>
       </ol>

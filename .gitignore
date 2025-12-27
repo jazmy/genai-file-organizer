@@ -9,10 +9,11 @@ out/
 build/
 dist/
 
-# Database - contains user file history
+# Database - contains user file history (keep .gitkeep for directory structure)
 data/*.db
 data/*.db-journal
 data/*.db-wal
+!data/.gitkeep
 server/data/
 
 # User configuration (use .example files as templates)

@@ -462,6 +462,24 @@ ffmpeg -version
 
 Make sure you have read/write permissions for the directories you're processing.
 
+### Database errors ("readonly database")
+
+If you see "attempt to write a readonly database" errors:
+
+```bash
+# Restart the server - this usually fixes stale SQLite connections
+# Stop the server (Ctrl+C) then start again
+npm run server
+
+# If the issue persists, check file permissions
+ls -la data/genorganize.db
+# Should show -rw-r--r-- (644) permissions
+
+# Fix permissions if needed
+chmod 644 data/genorganize.db
+chmod 755 data/
+```
+
 ### llama-server issues
 
 ```bash
