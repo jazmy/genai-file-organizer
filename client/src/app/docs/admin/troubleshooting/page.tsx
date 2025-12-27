@@ -193,10 +193,10 @@ rm data/*.db-wal data/*.db-shm`}</code></pre>
       <h3>Reset Database</h3>
       <p><strong>Warning:</strong> This deletes all history and settings</p>
       <pre><code>{`# Backup first
-cp server/data/genorganize.db server/data/genorganize.db.backup
+cp data/genorganize.db data/genorganize.db.backup
 
 # Delete database
-rm server/data/genorganize.db
+rm data/genorganize.db
 
 # Restart server (will recreate database)
 npm run server`}</code></pre>
@@ -291,6 +291,11 @@ LOG_LEVEL=debug npm run server
             <td><code>ECONNREFUSED</code></td>
             <td>Server not running</td>
             <td>Start the API server</td>
+          </tr>
+          <tr>
+            <td><code>SQLITE_READONLY</code></td>
+            <td>Stale database connection</td>
+            <td>Restart the server</td>
           </tr>
           <tr>
             <td><code>OLLAMA_UNAVAILABLE</code></td>
