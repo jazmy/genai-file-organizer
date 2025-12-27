@@ -314,6 +314,7 @@ export function useProcessing() {
 
         // Get the original result to check if name was edited
         const originalResult = currentResults.get(filePath);
+
         // Compare against aiSuggestedName (original AI suggestion) to detect user edits
         const aiOriginalName = originalResult?.aiSuggestedName || originalResult?.suggestedName;
         const wasEdited = originalResult && aiOriginalName !== suggestedName;
