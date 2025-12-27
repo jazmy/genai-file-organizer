@@ -258,6 +258,7 @@ try {
 // Default descriptions for each category (used in categorization prompt)
 const DEFAULT_DESCRIPTIONS = {
   _global_naming_rules: 'Global rules that apply to ALL filename generation (prepended to every filetype prompt)',
+  _filename_validation: 'Filename quality validation rules for checking generated filenames',
   prd: 'product requirements documents, PRDs, specs, feature requirements',
   meeting_notes: 'meeting notes, minutes, agendas, action items from meetings',
   strategy: 'strategy documents, strategic plans, vision docs, roadmaps',
@@ -288,92 +289,76 @@ const DEFAULT_DESCRIPTIONS = {
   video: 'videos, movies, screen recordings, clips',
   meme: 'memes, humor images, internet jokes',
   design: 'design files, mockups, wireframes, logos, UI designs',
+  data: 'data files, CSV exports, spreadsheets with raw data, database exports',
+  form: 'forms, official documents with form numbers like W-9, I-9, DS-11',
+  invitation: 'invitations, event invites, party invites, wedding invites, RSVP requests',
+  photoshop: 'Photoshop files, PSD files, photo edits, composites, retouching projects',
+  vector: 'vector files, AI files, SVG files, EPS files, logos, icons, illustrations',
 };
 
 // Default prompts to seed the database
 const DEFAULT_PROMPTS = {
   // === SYSTEM PROMPT FOR CATEGORIZATION ===
-  _categorization: `You are a file categorizer. Analyze the file and respond with ONLY ONE of these categories:
+  _categorization: `You are a file categorizer. Analyze the file and select a category from the VALID CATEGORIES list below.
 
-=== CRITICAL: IMAGE FILE FORMATS ===
-Files with these extensions are ALWAYS images - NEVER categorize as note:
-- AVIF, WEBP, PNG, JPG, JPEG, GIF, BMP, TIFF, HEIC, HEIF
+RESPOND WITH EXACTLY THIS JSON FORMAT:
+{
+  "category": "<category_name>",
+  "reasoning": "<brief explanation of why this category was chosen>"
+}
 
-For image files, check these categories IN ORDER (use the first that matches):
-1. mail - if it has shipping labels, barcodes, carrier names (UPS/USPS/FedEx)
-2. invoice - if it shows receipts, prices, order confirmations
-3. screenshot - if it shows app UI, website, error message, settings screen, terminal
-4. infographic - if it has charts, statistics, data visualizations, educational graphics
-5. meme - if it is humorous, has impact font text, internet joke format
-6. sticker - if it is a cartoon character, emoji-style, cute illustration, digital sticker
-7. design - if it is a mockup, wireframe, UI design, logo, graphic design work
-8. photo - ONLY as last resort if none of the above match (real-world photos of people, places, objects)
+=== FILENAME HINTS ===
+If the current filename contains a category keyword, give it consideration but ALWAYS verify with content:
+- Filename contains "report" -> likely report
+- Filename contains "meeting" or "minutes" -> likely meeting_notes
+- Filename contains "invoice" or "receipt" -> likely invoice
+- Filename contains "prd" or "requirements" -> likely prd
 
-=== CRITICAL: CHECK FOR SHIPPING LABELS ===
-SHIPPING LABEL INDICATORS (if ANY of these exist, categorize as mail):
-- Carrier names: UPS, USPS, FedEx, DHL, OnTrac, LaserShip
-- Tracking numbers starting with "1Z" (UPS) or similar patterns
-- Large barcodes with routing codes
-- "SHIP TO" or "DELIVER TO" addresses
-- Service types like "UPS STANDARD", "PRIORITY MAIL", "GROUND"
-- Postal/ZIP codes prominently displayed
-- Weight information (LBS, KG)
+The content is the final authority over filename hints.
 
-=== CRITICAL: CHECK FOR TRANSCRIPT ===
-TRANSCRIPT INDICATORS (if ANY of these exist, categorize as transcript):
-- Timestamps like "00:00", "01:23", "13:45" before speaker names
-- Lines formatted as "Name: what they said" or "Speaker 1: what they said"
-- Contains the word "Transcript" in headers
-- Shows verbatim dialogue with multiple speakers taking turns
+=== IMAGE FILE HANDLING ===
+Files with image extensions (AVIF, WEBP, PNG, JPG, JPEG, GIF, BMP, TIFF, HEIC, HEIF) - check in order:
+1. mail - shipping labels, barcodes, carrier names
+2. invoice - receipts, prices, order confirmations
+3. screenshot - app UI, website, error message, settings screen
+4. infographic - MUST have charts, graphs, statistics, or numerical data displays. NOT photos of people/places.
+5. meme - humorous, impact font, internet joke format
+6. sticker - cartoon character, emoji-style, cute illustration
+7. design - mockup, wireframe, UI design, logo
+8. photo - real-world photos of people, animals, places, events, holidays, costumes (use for images without data/charts)
 
-=== DOCUMENT TYPES (for text documents, PDFs, articles) ===
-- transcript (VERBATIM records with timestamps and speaker labels)
-- meeting_notes (ONLY for summarized bullet points, action items, agendas - NO speaker dialogue)
-- prd (product requirements documents, PRDs, specs, feature requirements)
-- strategy (strategy documents, strategic plans, vision docs, roadmaps)
-- report (reports, analysis, findings, summaries, reviews)
-- plan (project plans, timelines, schedules, milestones)
-- proposal (proposals, pitches, business cases, recommendations)
-- guide (guides, how-tos, tutorials, documentation, manuals, instructions)
-- memo (memos, internal communications, announcements to team)
-- research (research papers, studies, whitepapers, academic content)
-- template (templates, forms, boilerplates, reusable documents)
-- feedback (feedback, reviews, evaluations, assessments, critiques)
-- announcement (announcements, press releases, public communications)
-- training (training materials, courses, learning content, onboarding docs)
-- newsletter (newsletters, digests, periodic updates, email campaigns)
-- draft (drafts, work in progress, unfinished documents)
-- note (quick notes, personal notes, jottings, reminders - TEXT ONLY, never for images)
-- prompt (AI prompts, LLM instructions, prompt templates)
-- job_posting (job postings, job descriptions, career opportunities, hiring docs)
-- invitation (invitations, event invites, party invites, wedding invites, RSVP requests)
+IMPORTANT: A photo of a person (even in costume like Santa) is a PHOTO, not an infographic. Infographics MUST contain data visualizations.
 
-=== IMAGE & DESIGN TYPES (in priority order) ===
-- screenshot (screenshots of apps, websites, UI, error messages, settings screens)
-- infographic (visual data presentations, charts, statistics, educational graphics)
-- meme (memes, humor images, internet jokes, impact font)
-- sticker (digital stickers, emoji-style graphics, cartoon characters, cute illustrations)
-- design (design files, mockups, wireframes, UI designs, logos, graphic design)
-- photo (LAST RESORT - real photos of people, places, objects, nature)
+RESPOND WITH ONLY THE JSON. No markdown code blocks. Always include reasoning.
+`,
 
-=== OTHER CATEGORIES ===
-- mail (shipping labels, mailing labels, package labels - HAS PRIORITY)
-- invoice (receipts, orders, invoices, bills, confirmations - look for prices and vendor names)
-- code (source code, scripts, config files, programming files)
-- audio (music, podcasts, voice recordings, sound files)
-- video (videos, movies, screen recordings, clips)
+  // === FILENAME VALIDATION PROMPT ===
+  _filename_validation: `You are a filename quality validator. Check if the generated filename meets these criteria:
 
-=== PRIORITY RULES (CHECK IN ORDER) ===
-1. If file is an image (AVIF/WEBP/PNG/JPG/GIF/HEIC) → follow the IMAGE FILE FORMATS section above
-2. If image has barcodes + carrier name (UPS/USPS/FedEx) + tracking number → mail
-3. If content has timestamps + speaker names → transcript
-4. If the document contains prices, order numbers, vendor names → invoice
-5. If it mentions RSVP, "you are invited", event date → invitation
-6. For text documents, choose the MOST SPECIFIC document type
-7. Use "note" ONLY for simple TEXT notes - NEVER for image files
-8. Use "photo" ONLY as last resort when no other image category fits
+STRUCTURAL RULES:
+- Has valid category prefix (note_, report_, photo_, invoice_, etc.)
+- No special characters except hyphens and underscores
+- Reasonable length (5-100 characters before extension)
+- Has proper file extension matching original
 
-Respond with ONLY the category name, nothing else.`,
+CONTENT QUALITY:
+- Descriptive of actual content (not generic like "document", "file", "image")
+- If content has visible text/title, filename should include key terms
+- If image shows identifiable subject (brand, animal, person), filename reflects it
+- Brand names included when visible on products
+
+FORMAT:
+- Uses underscores between major sections (prefix_description_date)
+- Uses hyphens between words within sections
+- Date format is YYYY-MM-DD if present
+
+Respond with JSON:
+{
+  "valid": true/false,
+  "reason": "explanation",
+  "suggestedFix": "if invalid, what to fix"
+}
+`,
 
   // === GLOBAL NAMING RULES (prepended to all filetype prompts) ===
   _global_naming_rules: `=== FILENAME GENERATION RULES ===
@@ -801,24 +786,53 @@ Filename:`,
 
   photo: `Generate a filename for this PHOTO.
 
-FORMAT: img_[subject]_[context-or-location]_[date].ext
+FORMAT: photo_[main-subject]_[context].ext
+
+=== NOUN PRIORITIZATION (Most Important) ===
+
+The filename MUST prioritize nouns in this order:
+
+1. PRIMARY SUBJECT (WHO/WHAT) - Always include first:
+   - PEOPLE: Names, characters, or descriptions (santa-claus, john-smith, woman-in-red-dress)
+   - ANIMALS: Species and details (golden-retriever-puppy, monarch-butterfly)
+   - OBJECTS: Specific items (vintage-typewriter, red-ferrari, birthday-cake)
+
+2. CONTEXT (WHERE/WHEN) - Include after the subject:
+   - EVENTS: Holidays, occasions (christmas, birthday-party, wedding)
+   - PLACES: Locations (beach, paris, kitchen)
+   - ACTIVITIES: What is happening (hiking, cooking, playing-piano)
+
+=== EXAMPLES ===
+- Photo of Santa Claus with Christmas tree -> photo_santa-claus_christmas.jpg (subject first, event second)
+- Photo of dog at the beach -> photo_golden-retriever_beach.jpg
+- Photo of cake at birthday party -> photo_birthday-cake_party.jpg
+- Photo of woman hiking in mountains -> photo_woman-hiking_mountains.jpg
+
+=== PRESERVE CONTEXT FROM ORIGINAL FILENAME ===
+If the original filename contains meaningful context (events, dates, places), INCLUDE it:
+- Original: "christmas-2024.jpg" showing Santa -> photo_santa-claus_christmas-2024.jpg
+- Original: "beach-vacation.jpg" showing family -> photo_family_beach-vacation.jpg
+
+=== ANALYZE THE IMAGE ===
+
+1. IDENTIFY THE MAIN SUBJECT (this goes first in filename):
+   - Look for people, animals, or prominent objects
+   - Be specific: "santa-claus" not "man", "golden-retriever" not "dog"
+
+2. READ ALL VISIBLE TEXT:
+   - Book covers, product labels, signs -> include in filename
+   - Example: Book showing "1984" -> photo_1984-book-cover.jpg
+
+3. IDENTIFY CONTEXT from image AND original filename:
+   - Events, holidays, locations, activities
+   - Combine what you see with context from the original filename
 
 RULES:
-- subject: main subject (person-name, animal-type, object, scene)
-- context-or-location: action, location, event, or setting
-- date: YYYY-MM-DD if available
-
-CONTEXT CLUES:
-- Check the original filename for names, dates, or location hints
-- Look for text in the image (signs, labels, watermarks)
-- Identify people by context if names aren't available
-
-Examples:
-- img_golden-retriever_beach-sunset_2024-12-15.jpg
-- img_family_christmas-dinner_2024-12-25.jpg
-- img_sarah_graduation-ceremony_2024-05-20.jpg
-
-Filename:`,
+- Subject ALWAYS comes before context in the filename
+- Use hyphens between words
+- Remove special characters (use "and" instead of "&")
+- Be specific, not generic
+`,
 
   sticker: `Generate a filename for this STICKER.
 
@@ -879,22 +893,16 @@ Filename:`,
 
   design: `Generate a filename for this DESIGN FILE.
 
-FORMAT: design_[type]_[project-or-subject]_[version].ext
+FORMAT: design_[type]-[project-or-subject]-[version].[ext]
 
 RULES:
-- type: mockup, wireframe, logo, icon, ui, banner, poster, etc.
-- project-or-subject: what it's for or depicts
-- version: v1, v2, final, draft, etc. if applicable
+- type: mockup, wireframe, logo, icon, ui, banner, poster, graphic, illustration
+- project-or-subject: describe what the design shows or is for
+- version: v1, v2, final, draft (only if version info is visible)
+- IMPORTANT: Describe the ACTUAL content of the image, not generic placeholders
 
-CONTEXT CLUES:
-- Check original filename for project names or versions
-- Look for any visible text, brand names, or labels
 
-Examples:
-- design_mockup_homepage_v2.psd
-- design_logo_company-rebrand_final.ai
-
-Filename:`,
+`,
 
   audio: `Generate a filename for this AUDIO FILE.
 
@@ -933,6 +941,124 @@ Examples:
 - vid_recording_zoom_team-meeting_2024-12-15.mp4
 
 Filename:`,
+
+  // === NEW CATEGORIES ===
+  data: `Generate a filename for this DATA FILE.
+
+FORMAT: data_[subject]_[source]_[date].ext
+
+CRITICAL RULES:
+- subject: What the data is about (sales, customers, products, employees, transactions, etc.)
+- source: Where it came from if identifiable (company name, system name, export source)
+- date: YYYY-MM-DD or YYYY-MM format if available
+- CSV files are ALWAYS data files, never notes or documents
+- XLS/XLSX with raw data exports should also use this format
+
+Examples:
+- data_sales-report_2024-12.csv
+- data_customer-list_salesforce_2024-12-15.csv
+- data_employee-directory_hr-system_2024.xlsx
+- data_product-inventory_2024-12-20.csv
+- data_transaction-log_stripe_2024-11.csv
+- data_survey-responses_2024-q4.xlsx
+
+
+`,
+
+  form: `Generate a filename for this FORM.
+
+FORMAT: form_[form-name-or-number]_[purpose-or-system-name]_[version-or-date].ext
+
+CRITICAL: The filename MUST include what the form is FOR, not just its number.
+
+RULES:
+- form-name-or-number: Official form number (ds11, w9, i9, 1040) or form letter (Form D, Form A)
+- purpose-or-system-name: The system, program, or purpose the form serves
+  - Look for system names like "EMCP", "HR", "Performance Evaluation"
+  - Extract the main topic from the document title or heading
+- version-or-date: Revision number, version, or date if present
+
+EXAMPLES:
+- Form D for EMCP Performance Evaluation -> form_d_emcp-performance-evaluation_rev-6-09.doc
+- W-9 tax form -> form_w9_tax-identification-request.pdf
+- I-9 employment form -> form_i9_employment-eligibility-verification.pdf
+- DS-11 passport form -> form_ds11_passport-application.pdf
+
+BAD: form_d_rev-6-09.doc (missing what the form is for)
+GOOD: form_d_emcp-performance-evaluation_rev-6-09.doc (includes purpose)
+
+READ the document content to find what system or purpose the form serves.
+`,
+
+  invitation: `Generate a filename for this INVITATION.
+
+FORMAT: invite_[event-type]_[host]_[date].ext
+
+CRITICAL RULES:
+- event-type: wedding, birthday, party, conference, shower, graduation, holiday-party, etc.
+- host: Who is hosting - person name, family name, company, organization
+- date: YYYY-MM-DD format of the EVENT date (not when invite was sent)
+- Include enough info to understand at a glance: what event, who is hosting, when
+
+Examples:
+- invite_wedding_smith-family_2025-06-15.pdf
+- invite_birthday_sarah_2025-01-20.png
+- invite_holiday-party_acme-corp_2024-12-20.pdf
+- invite_conference_ieee_2025-03-10.pdf
+- invite_baby-shower_jane-doe_2025-02-10.jpg
+- invite_graduation_johnson-family_2025-05-25.pdf
+
+
+`,
+
+  photoshop: `Generate a filename for this PHOTOSHOP FILE.
+
+FORMAT: psd_[type]_[subject-or-project]_[version].psd
+
+RULES:
+- type: edit, composite, retouch, mockup, template, artwork, banner, poster, etc.
+- subject-or-project: what the file depicts or is for
+- version: v1, v2, final, draft, etc. if visible or implied
+- If text is prominent, include key words (hyphenated, lowercase)
+
+CONTEXT CLUES:
+- Check original filename for project names or versions
+- Look for visible text, brand names, layer names
+- Note if it appears to be a template or work-in-progress
+
+Examples (for reference only on formatting):
+- psd_edit_portrait-retouching_v2.psd
+- psd_composite_product-showcase_final.psd
+- psd_template_social-media-banner.psd
+- psd_artwork_abstract-background_v1.psd
+
+
+`,
+
+  vector: `Generate a filename for this VECTOR FILE.
+
+FORMAT: vec_[type]_[subject-or-content]_[version].[KEEP-ORIGINAL-EXTENSION]
+
+RULES:
+- type: logo, icon, illustration, pattern, badge, graphic, diagram, etc.
+- subject-or-content: what the vector depicts
+- version: v1, v2, final, draft, etc. if applicable
+- Preserve original extension (.ai, .svg, .eps)
+- If text is visible, include key words (hyphenated, lowercase)
+
+CONTEXT CLUES:
+- Check original filename for project or brand names
+- Look for any text, logos, or recognizable shapes
+- Note the style: flat, outline, detailed, minimalist
+
+Examples (for reference only on formatting):
+- vec_logo_company-brand_final.ai
+- vec_icon_shopping-cart.svg
+- vec_illustration_hero-banner_v2.ai
+- vec_pattern_geometric-tiles.eps
+
+
+`,
 };
 
 // Seed default prompts - add any missing categories
