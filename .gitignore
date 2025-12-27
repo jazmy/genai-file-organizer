@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Database - contains user file history
+data/*.db
+data/*.db-journal
+data/*.db-wal
+server/data/
+
+# User configuration (use .example files as templates)
+server/.env
+config/genorganize.config.json
+server/genorganize.config.json
+
+# Cache and temp files
+.cache/
+*.log
+*.tmp
+*.temp
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Claude Code
+.claude/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files (keep .example files)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Playwright
+/playwright-report/
+/playwright/.cache/

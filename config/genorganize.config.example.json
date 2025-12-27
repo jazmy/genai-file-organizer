@@ -1,0 +1,51 @@
+{
+  "ollama": {
+    "host": "http://127.0.0.1:11434",
+    "model": "llama3.1:8b",
+    "timeout": 120000
+  },
+  "naming": {
+    "maxLength": 100,
+    "preserveExtension": true,
+    "dateFormat": "YYYY-MM-DD",
+    "lowercase": true
+  },
+  "processing": {
+    "batchSize": 10,
+    "delayBetweenFiles": 500,
+    "maxContentLength": 25000,
+    "skipAudio": false,
+    "skipVideo": false,
+    "audioMode": "metadata",
+    "videoMode": "keyframes",
+    "dryRun": false
+  },
+  "folders": {
+    "enabled": false,
+    "createIfMissing": true,
+    "rules": [
+      { "type": "invoice", "destination": "./Invoices" },
+      { "type": "screenshot", "destination": "./Screenshots" },
+      { "type": "document", "destination": "./Documents" },
+      { "type": "image", "destination": "./Images" },
+      { "type": "video", "destination": "./Videos" },
+      { "type": "audio", "destination": "./Audio" },
+      { "type": "code", "destination": "./Code" },
+      { "type": "archive", "destination": "./Archives" }
+    ]
+  },
+  "watch": {
+    "enabled": false,
+    "directories": [],
+    "processedFolder": null,
+    "ignorePatterns": [".*", "*.tmp", "*.temp", "~*", "Thumbs.db", ".DS_Store"]
+  },
+  "server": {
+    "port": 3001,
+    "corsOrigins": ["http://localhost:3000"]
+  },
+  "logging": {
+    "level": "info",
+    "file": null
+  }
+}

@@ -1,0 +1,222 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fafafa;
+  --foreground: #18181b;
+}
+
+.dark {
+  --background: #09090b;
+  --foreground: #fafafa;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a1a1aa;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3f3f46;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #71717a;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #52525b;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Documentation prose styles */
+.docs-content {
+  color: #d4d4d8;
+  line-height: 1.75;
+}
+
+.docs-content h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: #fafafa;
+  border-bottom: 1px solid #3f3f46;
+  padding-bottom: 0.75rem;
+}
+
+.docs-content h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: #fafafa;
+}
+
+.docs-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #e4e4e7;
+}
+
+.docs-content p {
+  margin-bottom: 1rem;
+}
+
+.docs-content .lead {
+  font-size: 1.125rem;
+  color: #a1a1aa;
+  margin-bottom: 1.5rem;
+}
+
+.docs-content ul, .docs-content ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.docs-content ul {
+  list-style-type: disc;
+}
+
+.docs-content ol {
+  list-style-type: decimal;
+}
+
+.docs-content li {
+  margin-bottom: 0.5rem;
+}
+
+.docs-content strong {
+  color: #fafafa;
+  font-weight: 600;
+}
+
+.docs-content code {
+  background: #27272a;
+  color: #a5f3fc;
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.docs-content pre {
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.docs-content pre code {
+  background: transparent;
+  padding: 0;
+  color: #d4d4d8;
+}
+
+.docs-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.docs-content thead {
+  border-bottom: 2px solid #3f3f46;
+}
+
+.docs-content th {
+  text-align: left;
+  padding: 0.75rem;
+  font-weight: 600;
+  color: #fafafa;
+}
+
+.docs-content td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #27272a;
+}
+
+.docs-content tbody tr:hover {
+  background: #27272a;
+}
+
+.docs-content hr {
+  border: none;
+  border-top: 1px solid #3f3f46;
+  margin: 2rem 0;
+}
+
+.docs-content a {
+  color: #60a5fa;
+  text-decoration: none;
+}
+
+.docs-content a:hover {
+  text-decoration: underline;
+}
+
+/* Accessibility focus styles */
+:focus-visible {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Skip link styles (tailwind sr-only is available, but adding a fallback) */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  z-index: 9999;
+  padding: 1rem;
+  background: #3b82f6;
+  color: white;
+  text-decoration: none;
+  border-radius: 0 0 0.5rem 0;
+}
+
+.skip-link:focus {
+  top: 0;
+}

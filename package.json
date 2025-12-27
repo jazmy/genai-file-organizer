@@ -1,0 +1,38 @@
+{
+  "name": "genorganize",
+  "version": "1.0.0",
+  "description": "AI-powered local file organizer using Ollama or llama.cpp",
+  "private": true,
+  "scripts": {
+    "server": "cd server && npm run server",
+    "dev:server": "cd server && npm run dev",
+    "cli": "cd server && npm run cli",
+    "doctor": "cd server && npm run doctor",
+    "web": "cd client && npm run dev",
+    "build:web": "cd client && npm run build",
+    "install:all": "cd server && npm install && cd ../client && npm install",
+    "llama-server": "echo 'Update this script with your model paths. Example:' && echo 'llama-server -m /path/to/your/model.gguf --mmproj /path/to/mmproj.gguf --host 127.0.0.1 --port 8080 -np 4 -cb -c 16384'"
+  },
+  "keywords": [
+    "file-organizer",
+    "ai",
+    "ollama",
+    "llama-cpp",
+    "rename",
+    "local",
+    "vision"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/genorganize.git"
+  },
+  "homepage": "https://github.com/yourusername/genorganize#readme",
+  "bugs": {
+    "url": "https://github.com/yourusername/genorganize/issues"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
